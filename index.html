@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robin Mail | Studio Desk</title>
+<meta name="description" content="Robin Mail is an independent software studio building finder tools for law firms and other businesses that rely on hard-to-find public information.">
+<link rel="icon" href="assets/print-01.png">
+<style>
+:root{--paper:#fcfcfa;--ink:#242722;--muted:#52554e;--line:#c9ccc3;--wash:#eef0ea;--green:#21463a;--blue:#263e5e;--rust:#9a3227;--mono:ui-monospace,Menlo,Consolas,monospace;--serif:Georgia,'Times New Roman',serif;--tab:68px;--slot:42px;--parchment:#f1e7d3;--parchment-tray:#f6eedf;--parchment-active:#e8d9bb;--parchment-rule:#a89a80;--parchment-divider:#c8b99d;--parchment-ink:#54462f}
+*{box-sizing:border-box}body{margin:0;background:#d9ddd5;color:var(--ink);font:1rem/1.56 -apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit}img,svg{display:block;max-width:100%}img{height:auto}p,h1,h2,h3,figure,dl,dd{margin:0}[hidden]{display:none!important}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid #8d301f;outline-offset:3px}
+.view:focus,[data-heading]:focus{outline:none}
+.small{font:.78rem/1.4 var(--mono);letter-spacing:.055em;text-transform:uppercase}.muted{color:var(--muted)}
+.shell{position:relative;display:grid;grid-template-rows:var(--tab) minmax(0,1fr) var(--slot);height:calc(100dvh - 30px);min-height:485px;max-width:1700px;margin:15px auto;width:calc(100% - 30px);border:1px solid #555b52;box-shadow:0 9px 22px #18201535;background:var(--paper);isolation:isolate}
+.shell::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence baseFrequency='.82' numOctaves='3' stitchTiles='stitch' type='fractalNoise'/%3E%3C/filter%3E%3Cpath d='M0 0h140v140H0z' filter='url(%23g)' opacity='.55'/%3E%3C/svg%3E");mix-blend-mode:multiply}
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;border-bottom:1px solid var(--parchment-rule);background:var(--parchment)}
+.brand{display:flex;align-items:center;gap:12px;padding:0 17px;text-decoration:none;font:700 1.76rem/1 var(--serif);white-space:nowrap;width:fit-content}.brand img{width:63px;height:48px;object-fit:contain}
+.nav{display:flex}.nav a{display:grid;place-items:center;min-width:80px;padding:0 11px;border-left:1px solid var(--parchment-divider);text-decoration:none}.nav a:last-child{border-right:1px solid var(--parchment-divider)}.nav a[aria-current="page"]{background:var(--parchment-active);color:var(--parchment-ink);box-shadow:inset 0 -2px #877152}
+.edition{align-self:center;justify-self:end;margin-right:15px;color:var(--muted);text-align:right}
+.view{min-width:0;min-height:0;overflow:auto;scrollbar-color:#90988a #eef0e9}
+
+/* Desk */
+.desk{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.19fr) minmax(0,.94fr);height:100%;overflow:hidden}
+.scroll{min-height:0;min-width:0;overflow:auto;scrollbar-width:thin;scrollbar-color:#90988a #eef0e9;overscroll-behavior:contain}
+.railhead{position:sticky;top:0;z-index:2;padding:10px 16px;border-bottom:1px solid var(--line);background:#edf0e9;color:#284135;display:flex;justify-content:space-between;gap:12px}
+.story{padding:clamp(16px,2.2vw,34px)}
+.story h1{font:500 clamp(2.05rem,3.6vw,4.6rem)/1.02 var(--serif);letter-spacing:-.037em;margin:0 0 19px;max-width:12ch}
+.story h2{font:500 clamp(1.55rem,2.35vw,2.6rem)/1.08 var(--serif);letter-spacing:-.022em;margin-bottom:13px}
+.story p+p{margin-top:14px}.lede{font-size:1.06rem}
+.soft{font-weight:680;text-underline-offset:4px}
+.leadshot{margin-bottom:16px;border:1px solid #99a79d;padding:4px;background:white}.leadshot img{width:100%}
+.bill{border-top:1px solid var(--line);margin-top:25px;padding-top:17px}.bill>.small{display:block;margin-bottom:8px;color:var(--green)}
+.kinds{list-style:none;padding:0;margin:4px 0 0}.kinds li{display:grid;grid-template-columns:5.2em 1fr;gap:12px;border-bottom:1px solid var(--line);padding:10px 0}.kinds b{font:650 .8rem/1.9 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--rust)}
+.other{margin:6px 0 0;padding:0;list-style:none}.other li{padding:9px 0;border-bottom:1px solid var(--line)}.other a{font:500 1.2rem var(--serif);text-underline-offset:3px}.other small{display:block;color:var(--muted);margin-top:3px;font-size:.92rem}
+
+/* Desk side panes: colored paper, matched to the quiet blue center */
+.desk > [aria-labelledby="left-label"]{background:#f4ebee;scrollbar-color:#a58d96 #f4ebee}
+.desk #left-label{background:#ebdfe4;color:#573e49;border-color:#c9b5be}
+.desk > [aria-labelledby="right-label"]{background:#eaf0e8;scrollbar-color:#879d87 #eaf0e8}
+.desk #right-label{background:#dee9db;color:#284135;border-color:#b2c2ae}
+
+/* Center: dispatch feed */
+.press{display:grid;grid-template-rows:auto minmax(0,1fr);position:relative;overflow:hidden;border-inline:1px solid #a0acb5;background:#e8eef2}
+.press .railhead{background:#dce6ec;color:#27425c;border-color:#b6c5cf}
+.feed{background:#e8eef2;scrollbar-color:#8294a3 #e8eef2}
+.post{border-bottom:1px solid var(--line)}
+.post-art{display:flex;justify-content:center;padding:14px 18px 0}
+.post-art img{width:auto;max-width:100%;max-height:min(60dvh,640px);mix-blend-mode:multiply}
+.post-art:focus-visible{outline-offset:-3px}
+.post-caption{padding:12px 20px 18px;background:#eef3f5;border-top:1px solid #b6c5cf}
+.post-caption h2{font:500 clamp(1.45rem,2.4vw,2.35rem)/1.08 var(--serif);letter-spacing:-.027em;margin:4px 0 7px}
+.post-caption h2 a{text-underline-offset:4px;text-decoration-thickness:1px}
+.post-caption .deck{color:var(--muted);margin-bottom:8px}
+.post-links{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.92rem}
+.desk-kicker{color:#3d5c46}
+.feed-end{padding:16px 20px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.92rem}
+.feed-end p{max-width:34ch}
+.ink-button{display:inline-block;border:1px solid #7d887a;color:#244336;background:#fdfdfa;padding:6px 9px;text-decoration:none}.ink-button:hover{background:#e9eee4}
+
+/* Tray */
+.slot{z-index:4;border-top:1px solid var(--parchment-rule);background:var(--parchment);display:flex;align-items:stretch;justify-content:space-between;min-width:0}
+.slot button{border:0;border-right:1px solid var(--parchment-divider);background:none;font-weight:720;padding:0 15px;display:flex;align-items:center;gap:12px;white-space:nowrap}.slot button:hover,.slot button[aria-expanded="true"]{background:var(--parchment-active)}
+.slot .handle{width:17px;height:11px;border-top:2px solid var(--parchment-ink);border-bottom:2px solid var(--parchment-ink);position:relative}.slot .handle:after{content:"";position:absolute;inset:3px 0 auto;border-top:1px solid var(--parchment-ink)}
+.slot .slotnote{align-self:center;padding-right:14px;color:var(--muted)}
+.tray{position:absolute;inset:auto 0 var(--slot);border-top:3px double var(--parchment-rule);background:var(--parchment-tray);z-index:3;box-shadow:0 -8px 21px #3c2d1827;transform:translateY(20px);opacity:0;visibility:hidden;transition:transform .26s cubic-bezier(.2,.7,.2,1),opacity .2s,visibility .26s;pointer-events:none}
+.tray.open{transform:translateY(0);visibility:visible;opacity:1;pointer-events:auto}
+.tray-grid{display:flex;overflow:auto;scroll-snap-type:x proximity;scrollbar-width:thin;min-height:150px;align-items:stretch}
+.archive-intro{flex:0 0 240px;padding:15px 20px;border-right:1px solid var(--line)}.archive-intro h2{font:500 1.65rem var(--serif);margin:5px 0}.archive-intro p:last-child{font-size:.89rem}
+.archive-card{display:grid;grid-template-columns:110px minmax(0,1fr);flex:0 0 clamp(320px,41vw,520px);align-items:center;gap:15px;padding:13px 18px;border-right:1px solid var(--line);scroll-snap-align:start;text-decoration:none}
+.archive-card:hover{background:var(--parchment-active)}.archive-card img{height:99px;width:100%;object-fit:contain;background:#f7f7f3}
+.archive-card strong{display:block;margin:5px 0;font:500 1.27rem/1.05 var(--serif)}.archive-card p{font-size:.89rem}
+
+/* Work index */
+.work-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);background:#edf0e9;padding:9px 19px}
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));min-height:calc(100% - 34px)}
+.project{display:grid;grid-template-rows:auto minmax(0,1fr);text-decoration:none;min-width:0;border-right:1px solid #9da798}.project:last-child{border:0}
+.project header{background:#fbfbf8;padding:12px 15px;min-height:97px}.project h2{font:500 clamp(1.55rem,3.3vw,3rem)/1 var(--serif);margin:7px 0 4px}.project .status{color:var(--muted)}
+.project-plate{display:grid;place-items:center;min-height:clamp(260px,53vh,650px);overflow:hidden;border-top:1px solid #819184}.project-plate img{width:100%;height:100%;object-fit:cover}
+.project:hover header{background:#e5ebdf}.screenplate{background:#dbe5eb}.fieldplate{background:#e8e2d7}.watchplate{background:#214638}.project-plate.watchplate img{object-position:87% 50%}
+.project-ink{mix-blend-mode:multiply}
+.projects.two{grid-template-columns:repeat(2,minmax(0,1fr))}.floodplate{background:#dde6ec}.project-plate.floodplate img{object-position:88% 50%}.plate-note{display:grid;gap:6px;text-align:center;color:#2a4458}
+.steps.light li{border-bottom:1px solid var(--line)}.steps.light b{color:var(--rust);opacity:1}.steps.light strong{font-weight:650}
+.product.flood{--bg:#eaf0f3;--fg:#213d52;--deep:#22405a;--deep-ink:#eef3f7;--rule:#a2b5c4;--card:#f8fafb}.figure-placeholder{aspect-ratio:2/1;display:grid;place-items:center;background:#dde6ec;color:#2a4458}
+.story>p+p{margin-top:12px}
+
+/* Project pages: shared structure, own colors */
+.product{--bg:#edf1e9;--fg:#1b362d;--deep:#204337;--deep-ink:#f4f6ef;--rule:#9fafa1;--card:#fbfcf8;background:var(--bg);color:var(--fg)}
+.product.signal{--bg:#eaf0f2;--fg:#253e54;--deep:#263c5c;--deep-ink:#eef2f7;--rule:#a3b3c4;--card:#f8fafc}
+.product.fob{--bg:#f0ebe1;--fg:#4f3523;--deep:#4a3424;--deep-ink:#f7f1e7;--rule:#c2b19b;--card:#fcfaf5}
+.product-top{display:flex;justify-content:space-between;padding:10px 20px;gap:20px;border-bottom:1px solid var(--rule);background:var(--bg);position:sticky;top:0;z-index:2}
+.product-hero{display:grid;grid-template-columns:.82fr 1.18fr;gap:25px;align-items:center;padding:clamp(23px,4vw,68px);max-width:1350px;margin:auto}
+.product h1{font:500 clamp(3.55rem,8.4vw,8rem)/.98 var(--serif);letter-spacing:-.05em;margin:13px 0 18px}
+.product .intro{font-size:1.12rem;max-width:40ch}
+.product h2{font:500 clamp(1.6rem,2.4vw,2.6rem)/1.1 var(--serif);letter-spacing:-.02em;margin:8px 0 12px}
+.product figure{border:1px solid var(--rule);padding:7px;background:white}.product figure img{width:100%}.product figure figcaption{padding:8px 4px 1px}
+.product .hero-ink img{max-height:570px;width:100%;object-fit:contain}
+.product-paper{padding:clamp(24px,4vw,66px);background:var(--deep);color:var(--deep-ink);display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,75px)}
+.product-paper p{max-width:44ch}
+.steps{list-style:none;padding:0;margin:4px 0 0}.steps li{display:grid;grid-template-columns:2.4em 1fr;gap:10px;padding:11px 0;border-bottom:1px solid color-mix(in srgb,var(--deep-ink) 30%,transparent)}.steps b{font:650 .82rem/1.9 var(--mono);opacity:.8}
+.steps strong{display:block}
+.sheet{padding:clamp(24px,4vw,66px);max-width:1350px;margin:auto}
+.sheet+.sheet{padding-top:0}
+.sheet-head{max-width:60ch;margin-bottom:18px}
+.label{display:inline-block;border:1px solid var(--rule);padding:3px 7px;margin-top:6px}
+.compare{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch}
+.compare .arrow{align-self:center;font:500 2rem var(--serif);opacity:.6}
+.card{background:var(--card);border:1px solid var(--rule);padding:16px 18px}
+.card h3{font:500 1.35rem var(--serif);margin:6px 0 10px}
+.card blockquote{margin:0;font:1.02rem/1.6 var(--serif)}
+.fields{display:grid;gap:10px}.fields div{display:grid;grid-template-columns:8.5em 1fr;gap:10px;border-bottom:1px solid var(--rule);padding-bottom:9px}.fields div:last-child{border:0;padding-bottom:0}.fields dt{font:650 .76rem/1.7 var(--mono);text-transform:uppercase;letter-spacing:.05em;opacity:.85}
+.standing{border-top:1px solid var(--rule);padding-top:18px;display:grid;grid-template-columns:minmax(0,.4fr) minmax(0,1fr);gap:20px}
+.standing p{max-width:60ch}.standing p+p{margin-top:10px}
+.lineup{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--rule)}
+.lineup th,.lineup td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule)}
+.lineup th{font:650 .76rem var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.lineup td:first-child{font:500 1.1rem var(--serif);white-space:nowrap}
+.lineup .now{background:color-mix(in srgb,var(--deep) 9%,transparent)}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
+.modes div{border:1px solid color-mix(in srgb,var(--deep-ink) 35%,transparent);padding:13px 15px}
+.modes h3{font:500 1.3rem var(--serif);margin:4px 0 6px}
+
+/* Contact */
+.contact{background:#f5f6f0}
+.reply{max-width:1220px;margin:auto;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(34px,7vw,105px);padding:clamp(25px,6vw,82px)}
+.reply h1{font:500 clamp(2.8rem,5.4vw,5.6rem)/1.065 var(--serif);letter-spacing:-.028em;margin:21px 0 23px;max-width:11ch}
+.reply p{max-width:36ch;line-height:1.7}.reply p+p{margin-top:12px}
+.form{background:white;border:1px solid #a4ada0;box-shadow:5px 5px #dadecf;padding:clamp(18px,3vw,38px);display:grid;gap:24px;align-self:start}
+.form label{display:grid;gap:6px;font-weight:690;line-height:1.4}
+.form .hint{font-weight:450;color:var(--muted);font-size:.9rem}
+.form input,.form textarea{width:100%;padding:10px;border:1px solid #98a296;background:#fcfdfa;color:var(--ink);font-weight:450;line-height:1.55}
+.form textarea{resize:vertical}
+.form details{border-top:1px solid var(--line);padding-top:16px}
+.form summary{cursor:pointer;font-weight:690;color:var(--green)}
+.form details[open] summary{margin-bottom:18px}
+.form details .group{display:grid;gap:22px}
+.form button{width:fit-content;padding:9px 18px;border:1px solid var(--green);background:var(--green);color:white;font-weight:680}
+.form .status{font-size:.89rem;max-width:none}
+#brief{font:.92rem/1.6 var(--mono)}
+
+/* Dispatch article */
+.dispatch-story{background:#f7f8f2}
+.dispatch-page{width:min(1080px,calc(100% - 48px));margin:auto;padding:clamp(28px,6vw,80px) 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.69fr);gap:22px clamp(24px,6vw,75px)}
+.dispatch-heading h1{font:500 clamp(2.9rem,6vw,6.3rem)/1.04 var(--serif);letter-spacing:-.045em;margin:13px 0 17px}
+.standfirst{font:500 clamp(1.13rem,2vw,1.53rem)/1.43 var(--serif);color:#3a5140;max-width:39ch}
+.dispatch-plate{grid-column:2;grid-row:1 / span 2;background:white;border:1px solid #bec5b8;padding:8px;align-self:start}.dispatch-plate img{width:100%}.dispatch-plate figcaption{padding:7px 5px 2px;color:#435345}
+.dispatch-prose{grid-column:1;max-width:62ch}.dispatch-prose p{margin:0 0 14px}.dispatch-prose h2{font:500 1.55rem/1.2 var(--serif);margin:24px 0 10px}
+.dispatch-prose .post-links{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);font-size:1rem}
+
+@media(max-width:850px){
+.shell{margin:0;width:100%;height:100dvh;border:0;min-height:380px}.edition{display:none}.top{grid-template-columns:1fr auto}
+.desk{display:flex;flex-direction:column;overflow:auto;height:100%}.desk>*{flex:none}.scroll{overflow:visible}
+.press{border-inline:0;border-block:1px solid #a0acb5;overflow:visible}.feed{overflow:visible}
+.post-art img{max-height:52dvh}
+.railhead{position:static}.story h1{max-width:15ch;font-size:clamp(2.1rem,7vw,3.7rem)}.story h2{font-size:1.9rem}.leadshot{max-width:470px}
+.projects,.projects.two{grid-template-columns:1fr}.project{border-right:0;border-bottom:1px solid #9da798}.project-plate{height:clamp(205px,47vw,385px);min-height:0}
+.product-hero,.product-paper,.reply,.standing{grid-template-columns:1fr}.product h1{font-size:clamp(3.5rem,12vw,7rem)}
+.compare{grid-template-columns:1fr}.compare .arrow{justify-self:center;transform:rotate(90deg)}
+}
+@media(max-width:650px){.dispatch-page{grid-template-columns:1fr;width:calc(100% - 38px);gap:22px}.dispatch-plate{grid-row:auto;grid-column:1;max-width:340px}.dispatch-prose{grid-column:1}
+.archive-intro{flex-basis:125px;padding:10px 9px}.archive-card{flex-basis:205px;grid-template-columns:1fr;padding:9px 10px;gap:5px}.archive-card img{height:54px}.archive-card strong{font-size:1.07rem}.archive-intro h2{font-size:1.35rem}.archive-intro p:last-child,.archive-card p{font-size:.76rem}
+.modes{grid-template-columns:1fr}.fields div{grid-template-columns:1fr;gap:2px}}
+@media(max-width:460px){:root{--tab:62px}.brand{padding:0 7px;font-size:1.23rem;gap:5px}.brand img{width:45px;height:36px}.nav a{min-width:0;padding:0 8px;font-size:.71rem}
+.slot .slotnote{font-size:.69rem;padding-right:8px}.slot button{padding:0 10px;gap:7px;font-size:.88rem}
+.work-head,.product-top{padding-inline:11px}.reply{padding:23px 22px 34px;gap:27px}.reply h1{font-size:clamp(2.55rem,11vw,3.7rem)}.lineup th,.lineup td{padding:8px 9px}}
+@media(max-width:350px){.brand{font-size:1.08rem}.brand img{width:38px;height:30px}.nav a{padding:0 6px;font-size:.66rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style></head>
+<body><div class="shell">
+<header class="top"><a class="brand" href="#desk"><img src="assets/print-01.png" width="192" height="141" alt="">Robin Mail</a><nav class="nav small" aria-label="Studio sections"><a href="#desk" data-nav="desk">Desk</a><a href="#work" data-nav="work">Work</a><a href="#contact" data-nav="contact">Contact</a></nav><div class="edition small">Independent software studio</div></header>
+
+<!-- DESK -->
+<main class="view desk" id="desk" data-page aria-label="Robin Mail studio desk">
+<section class="scroll" tabindex="0" aria-labelledby="left-label"><div class="railhead small" id="left-label">Studio notes</div><div class="story">
+<h1 tabindex="-1" data-heading>Software that finds what's hard to find.</h1>
+<p class="lede">Robin Mail is an independent software studio. We build finder tools for law firms and other businesses that rely on public information scattered across the internet: reports, notices and records that are easy to miss and slow to track down.</p>
+<p>AI is part of how we design, build and test our work.</p>
+<figure style="margin:13px 0 19px;max-width:340px"><img src="assets/studio-notes-record.jpg" width="780" height="390" style="display:block;width:100%;height:auto;mix-blend-mode:multiply" alt="Ink illustration of an index-card drawer, with one red-tabbed record pulled up from the rest."></figure>
+<div class="bill"><span class="small">How a finder works</span><ol class="steps light">
+<li><b>01</b><span><strong>Name the thing you keep checking for</strong>A kind of report, notice or change that matters to your work.</span></li>
+<li><b>02</b><span><strong>Watch the places it tends to show up</strong>News, public posts, logs and records, checked continuously.</span></li>
+<li><b>03</b><span><strong>Bring back useful matches</strong>A short brief for each one, with the original source attached for review.</span></li>
+</ol></div>
+<div class="bill"><span class="small">Where we start</span><p>Our first finders are built for West Virginia. The same approach can be set up for other states, and for any kind of public information a business needs to keep track of.</p></div>
+<div class="bill"><span class="small">Working together</span><p>If your team spends hours searching for the same kind of information, tell us about it. One real example is the best place to start.</p><p><a class="soft" href="#contact">Start a project</a></p></div>
+</div></section>
+
+<section class="press dispatch-panel" aria-labelledby="dispatch-label"><div class="railhead small"><span id="dispatch-label">Dispatches</span><span class="muted">Newest first</span></div>
+<div class="feed scroll" id="feed" tabindex="0" aria-label="Dispatches, newest first"></div>
+</section>
+
+<section class="scroll" tabindex="0" aria-labelledby="right-label"><div class="railhead small" id="right-label">Finders</div><div class="story">
+<h2>Firewatch</h2>
+<a href="#firewatch" class="leadshot" style="display:block" aria-label="Open Firewatch"><img src="assets/print-03.jpg" width="1550" height="775" alt="A pine-green ink illustration of an Appalachian fire lookout above forested ridges."></a>
+<p>Our first finder, in development. It gathers public reports of potentially severe structure fires in West Virginia and keeps each source attached.</p>
+<p><a class="soft" href="#firewatch">Open Firewatch</a></p>
+<div class="bill"><span class="small">Next up</span><ul class="other">
+<li><a href="#floodwatch">Floodwatch</a><small>A finder for public reports of serious flood damage in West Virginia. In planning.</small>
+<a href="#floodwatch" class="leadshot" style="display:block;margin:10px 0 0" aria-label="Open Floodwatch"><img src="assets/floodwatch.jpg" width="1550" height="775" alt="Storm-blue engraving of a swollen river and a flood gauge on a bridge pier."></a></li>
+</ul><p style="margin-top:14px"><a class="soft" href="#work">See all finders</a></p></div>
+</div></section>
+</main>
+
+<!-- WORK -->
+<main class="view" id="work" data-page hidden><div class="work-head"><span class="small" tabindex="-1" data-heading>Finders</span><span class="small muted">Open a finder</span></div><div class="projects two">
+<a class="project" href="#firewatch"><header><div class="small">Finder</div><h2>Firewatch</h2><div class="small status">In development</div></header><div class="project-plate watchplate"><img src="assets/print-03.jpg" width="1550" height="775" alt="Appalachian fire lookout in pine-green ink."></div></a>
+<a class="project" href="#floodwatch"><header><div class="small">Finder</div><h2>Floodwatch</h2><div class="small status">In planning</div></header><div class="project-plate floodplate">
+<!-- FLOODWATCH ART SLOT: save the finished illustration as assets/floodwatch.jpg and it appears here automatically. Until then the placeholder below shows. See ART-NOTES.md. -->
+<img class="art-slot" src="assets/floodwatch.jpg" width="1550" height="775" alt="Storm-blue engraving of a swollen river and a flood gauge on a bridge pier." onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="plate-note" hidden><span class="small">Floodwatch</span><span class="small muted">Illustration to come</span></div></div></a>
+</div></main>
+
+<!-- FIREWATCH -->
+<main class="view product" id="firewatch" data-page hidden>
+<div class="product-top small"><a href="#work">Finders</a><span>Finder / In development</span></div>
+<section class="product-hero"><div><p class="small">A Robin Mail finder</p><h1 tabindex="-1" data-heading>Firewatch</h1><p class="intro">Firewatch gathers public reports of potentially severe structure fires in West Virginia, shows why each one was flagged, and keeps the original source attached so a person can check it.</p></div>
+<figure><img src="assets/print-03.jpg" width="1550" height="775" alt="Appalachian fire lookout illustrated in pine-green ink."><figcaption class="small">Appalachian lookout · original illustration</figcaption></figure></section>
+<section class="product-paper">
+<div><p class="small">Why it exists</p><h2>Serious fires get reported in scattered places.</h2><p>A news story here, a fire department post there, a line in a public log. For a business that needs to know about these fires quickly, they're easy to miss and slow to piece together. Firewatch puts them in one place and says plainly why each one stood out.</p></div>
+<div><p class="small">How it works</p><ol class="steps">
+<li><b>01</b><span><strong>Watch selected public sources</strong>Local news, public fire department posts and public incident logs.</span></li>
+<li><b>02</b><span><strong>Flag signs of substantial damage</strong>Words and details that suggest a structure was badly damaged or lost.</span></li>
+<li><b>03</b><span><strong>Write a short brief</strong>What was reported, why it was flagged and what's still unknown, with the source linked for review.</span></li>
+</ol></div>
+</section>
+<section class="sheet"><div class="sheet-head"><p class="small">Something to see</p><h2>From report to brief</h2><p>A made-up example of what goes in and what comes out.</p><p class="small label">Fictional example · not a real incident or place</p></div>
+<div class="compare">
+<div class="card"><p class="small">Source report · example</p><h3>Local news post, 6:40 a.m.</h3><blockquote>Crews from three departments responded overnight to a house fire on a rural road outside town. The fire chief said the two-story home was a total loss. No injuries were reported.</blockquote></div>
+<div class="arrow" aria-hidden="true">→</div>
+<div class="card"><p class="small">Firewatch brief · example</p><h3>Possible severe damage</h3><dl class="fields">
+<div><dt>Reported</dt><dd>House fire. Home described as a total loss.</dd></div>
+<div><dt>Why flagged</dt><dd>A residential structure and the words "total loss" in the same report.</dd></div>
+<div><dt>Still unknown</dt><dd>Exact address, cause, and whether other sources agree.</dd></div>
+<div><dt>For review</dt><dd>Open the source and confirm the details before acting.</dd></div>
+</dl></div>
+</div></section>
+<section class="sheet"><div class="standing"><p class="small">Where it stands</p><div><p>In development.</p><p>Firewatch is not an emergency alert or dispatch service. A flag is a lead for a person to check, not confirmation that a fire happened. This page describes the tool; it doesn't show live data.</p></div></div></section>
+</main>
+
+<!-- FLOODWATCH -->
+<main class="view product flood" id="floodwatch" data-page hidden>
+<div class="product-top small"><a href="#work">Finders</a><span>Finder / In planning</span></div>
+<section class="product-hero"><div><p class="small">A Robin Mail finder</p><h1 tabindex="-1" data-heading>Floodwatch</h1><p class="intro">Floodwatch is our next finder. It will apply the same approach as Firewatch to public reports of serious flood damage in West Virginia: gather the reports, explain why each one matters, and keep the source attached.</p></div>
+<!-- FLOODWATCH ART SLOT: same file as the Work page, assets/floodwatch.jpg. See ART-NOTES.md. -->
+<figure><img class="art-slot" src="assets/floodwatch.jpg" width="1550" height="775" alt="Storm-blue engraving of a swollen river and a flood gauge on a bridge pier." onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="figure-placeholder" hidden><span class="small">Illustration to come</span></div><figcaption class="small">Floodwatch · original illustration</figcaption></figure></section>
+<section class="sheet"><div class="standing"><p class="small">Where it stands</p><div><p>In planning.</p><p>More detail will be added here as the work takes shape.</p></div></div></section>
+</main>
+
+<!-- CONTACT -->
+<main class="view contact" id="contact" data-page hidden><section class="reply">
+<div><p class="small">Robin Mail / Contact</p><h1 tabindex="-1" data-heading>What do you need to find?</h1><p>Tell us what you're looking for, where it tends to turn up, and how quickly you need to know. Rough answers are fine.</p><p>If you have an example of a report or notice you wish you'd caught sooner, include it.</p></div>
+<form class="form" id="inquiry" novalidate>
+<label>What do you need to catch?<span class="hint">A kind of report, notice or record. An example helps.</span><textarea rows="3" name="goal" required></textarea></label>
+<label>Where does it usually show up?<span class="hint">News sites, public logs, agency pages, social posts. "Not sure" is fine.</span><textarea rows="2" name="inputs"></textarea></label>
+<label>How soon do you need to know?<span class="hint">Within the hour, the same day, or a weekly roundup.</span><input name="timing"></label>
+<label>What happens once you find it?<span class="hint">Who gets it and what they do next.</span><textarea rows="2" name="next"></textarea></label>
+<button type="submit">Preview your brief</button>
+<p role="status" id="form-status" class="status muted">Preview only. Nothing is sent or saved.</p>
+<textarea id="brief" rows="9" readonly hidden aria-label="Brief preview"></textarea>
+</form></section></main>
+
+<aside class="tray" id="tray" aria-hidden="true" inert aria-label="Dispatch archive"><div class="tray-grid" id="archive"><div class="archive-intro"><p class="small desk-kicker">Robin Mail journal</p><h2>Dispatches</h2><p class="muted">Notes and updates from the studio.</p></div></div></aside>
+<footer class="slot"><button id="tray-toggle" type="button" aria-expanded="false" aria-controls="tray"><span class="handle" aria-hidden="true"></span><span id="tray-label">Open dispatch tray</span></button><span class="slotnote small" id="folio">Studio desk</span></footer>
+</div>
+
+<script src="dispatches.js"></script>
+<script>
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const posts=window.DISPATCHES||[];
+const shell=document.querySelector('.shell'),tray=document.getElementById('tray');
+
+/* Build feed, archive and article pages from dispatches.js */
+const feed=document.getElementById('feed'),archive=document.getElementById('archive');
+posts.forEach((p,i)=>{
+  const meta=[p.kicker,p.date,i===0?'Latest':''].filter(Boolean).join(' · ');
+  const rel=p.related?`<a class="soft" href="${p.related.href}">Related: ${esc(p.related.label)}</a>`:'';
+  feed.insertAdjacentHTML('beforeend',`<article class="post"><a class="post-art" href="#${p.id}" tabindex="-1" aria-hidden="true"><img src="${p.image}" width="${p.width}" height="${p.height}" alt=""></a><div class="post-caption"><p class="small desk-kicker">${esc(meta)}</p><h2><a href="#${p.id}">${esc(p.title)}</a></h2><p class="deck">${esc(p.deck)}</p><div class="post-links"><a class="soft" href="#${p.id}">Read the dispatch</a>${rel}</div></div></article>`);
+  archive.insertAdjacentHTML('beforeend',`<a class="archive-card" href="#${p.id}"><img src="${p.image}" width="${p.width}" height="${p.height}" alt=""><div><span class="small desk-kicker">${esc(meta)}</span><strong>${esc(p.title)}</strong><p class="muted">${esc(p.deck)}</p></div></a>`);
+  tray.insertAdjacentHTML('beforebegin',`<main class="view dispatch-story" id="${p.id}" data-page hidden><header class="product-top small"><a href="#desk">Back to Desk</a><button class="ink-button small" data-open-tray type="button">All dispatches</button></header><article class="dispatch-page"><div class="dispatch-heading"><p class="small desk-kicker">${esc(['Robin Mail / Dispatch',p.date].filter(Boolean).join(' · '))}</p><h1 tabindex="-1" data-heading>${esc(p.title)}</h1><p class="standfirst">${esc(p.standfirst)}</p></div><figure class="dispatch-plate"><img src="${p.image}" width="${p.width}" height="${p.height}" alt="${esc(p.alt)}"><figcaption class="small">${esc(p.caption)}</figcaption></figure><div class="dispatch-prose">${p.body}${p.related?`<div class="post-links"><a class="soft" href="${p.related.href}">See the ${esc(p.related.label)} project</a><a class="soft" href="#desk">Back to Desk</a></div>`:''}</div></article></main>`);
+});
+feed.insertAdjacentHTML('beforeend',`<div class="feed-end"><p>${posts.length===1?"That's the first dispatch.":"That's every dispatch so far."} New ones appear here first and stay in the archive.</p><button class="ink-button small" type="button" data-open-tray>Open the archive</button></div>`);
+
+/* Routing */
+const pages=[...document.querySelectorAll('[data-page]')],nav=[...document.querySelectorAll('[data-nav]')],toggle=document.getElementById('tray-toggle'),label=document.getElementById('tray-label'),folio=document.getElementById('folio');
+const names={desk:'Studio desk',work:'Finders',firewatch:'Firewatch',floodwatch:'Floodwatch',contact:'Contact'};
+const postIds=new Set(posts.map(p=>p.id));posts.forEach(p=>names[p.id]=p.title);
+let active='desk';
+function setTray(on){tray.classList.toggle('open',on);tray.inert=!on;tray.setAttribute('aria-hidden',String(!on));toggle.setAttribute('aria-expanded',String(on));label.textContent=on?'Close dispatch tray':'Open dispatch tray';}
+function route(focus){const hash=decodeURIComponent(location.hash.slice(1));active=Object.hasOwn(names,hash)?hash:'desk';pages.forEach(p=>p.hidden=p.id!==active);
+  const tab=['desk','work','contact'].includes(active)?active:postIds.has(active)?'desk':'work';
+  nav.forEach(n=>{if(n.dataset.nav===tab)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});
+  folio.textContent=postIds.has(active)?'Dispatch':names[active];document.title=active==='desk'?'Robin Mail | Studio Desk':names[active]+' | Robin Mail';
+  if(focus){const page=document.getElementById(active);page.scrollTop=0;page.querySelector('[data-heading]').focus({preventScroll:true});}}
+route(false);addEventListener('hashchange',()=>{setTray(false);route(true)});
+
+/* Tray */
+toggle.addEventListener('click',e=>{const on=toggle.getAttribute('aria-expanded')!=='true';setTray(on);if(on&&e.detail===0)requestAnimationFrame(()=>tray.querySelector('a').focus());});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-open-tray]');if(b){setTray(true);requestAnimationFrame(()=>tray.querySelector('a').focus());}});
+tray.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{setTray(false);if(a.hash==='#'+active)document.getElementById(active).querySelector('[data-heading]').focus()}));
+addEventListener('keydown',e=>{if(e.key==='Escape'&&tray.classList.contains('open')){setTray(false);toggle.focus()}});
+
+/* Contact: local preview only */
+const form=document.getElementById('inquiry');
+form.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(form),brief=document.getElementById('brief'),status=document.getElementById('form-status');
+  if(!String(data.get('goal')).trim()){status.textContent='Add a line about what you want to make or solve, then preview again.';form.goal.focus();return;}
+  const rows=[['What to catch','goal'],['Where it shows up','inputs'],['How soon','timing'],['What happens next','next']];
+  brief.value=rows.map(([n,k])=>n+': '+(String(data.get(k)||'').trim()||'To be discussed')).join('\n\n');
+  brief.hidden=false;brief.focus();status.textContent='Brief ready to review. Nothing was sent.';});
+</script></body></html>
