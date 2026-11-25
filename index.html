@@ -78,6 +78,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .project:hover header{background:#e5ebdf}.screenplate{background:#dbe5eb}.fieldplate{background:#e8e2d7}.watchplate{background:#214638}.project-plate.watchplate img{object-position:87% 50%}
 .project-ink{mix-blend-mode:multiply}
 .projects.two{grid-template-columns:repeat(2,minmax(0,1fr))}.floodplate{background:#dde6ec}.project-plate.floodplate img{object-position:88% 50%}.plate-note{display:grid;gap:6px;text-align:center;color:#2a4458}
+.finder-catalog{padding:clamp(18px,3.5vw,44px);border-top:1px solid var(--line)}
+.finder-catalog h2{font:500 clamp(1.65rem,3vw,2.6rem)/1.1 var(--serif);margin:6px 0 18px}
+.finder-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.finder-card{display:block;min-width:0;background:#fbfbf8;border:1px solid #a2aba0;text-decoration:none}
+.finder-card img{width:100%;aspect-ratio:2/1;object-fit:contain;background:white}
+.finder-card header{padding:10px 13px 12px;border-top:1px solid #c9ccc3}
+.finder-card h3{font:500 1.55rem/1.1 var(--serif);margin-top:3px}
+.finder-card:hover header{background:#e5ebdf}
+.finder-concept h1{font-size:clamp(2.25rem,5.5vw,5.4rem);overflow-wrap:anywhere}
 .steps.light li{border-bottom:1px solid var(--line)}.steps.light b{color:var(--rust);opacity:1}.steps.light strong{font-weight:650}
 .product.flood{--bg:#eaf0f3;--fg:#213d52;--deep:#22405a;--deep-ink:#eef3f7;--rule:#a2b5c4;--card:#f8fafb}.figure-placeholder{aspect-ratio:2/1;display:grid;place-items:center;background:#dde6ec;color:#2a4458}
 .story>p+p{margin-top:12px}
@@ -194,7 +203,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 <p><a class="soft" href="#firewatch">Open Firewatch</a></p>
 <div class="bill"><span class="small">Next up</span><ul class="other">
 <li><a href="#floodwatch">Floodwatch</a><small>A finder for public reports of serious flood damage in West Virginia. In planning.</small>
-<a href="#floodwatch" class="leadshot" style="display:block;margin:10px 0 0" aria-label="Open Floodwatch"><img src="assets/floodwatch.jpg" width="1550" height="775" alt="Storm-blue engraving of a swollen river and a flood gauge on a bridge pier."></a></li>
+<a href="#floodwatch" class="leadshot" style="display:block;margin:10px 0 0" aria-label="Open Floodwatch"><img src="assets/watch/floodwatch.jpg" width="1774" height="887" alt="Deep river-blue engraving of a swollen creek, a bridge gauge and a small red warning flag."></a></li>
 </ul><p style="margin-top:14px"><a class="soft" href="#work">See all finders</a></p></div>
 </div></section>
 </main>
@@ -203,9 +212,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 <main class="view" id="work" data-page hidden><div class="work-head"><span class="small" tabindex="-1" data-heading>Finders</span><span class="small muted">Open a finder</span></div><div class="projects two">
 <a class="project" href="#firewatch"><header><div class="small">Finder</div><h2>Firewatch</h2><div class="small status">In development</div></header><div class="project-plate watchplate"><img src="assets/print-03.jpg" width="1550" height="775" alt="Appalachian fire lookout in pine-green ink."></div></a>
 <a class="project" href="#floodwatch"><header><div class="small">Finder</div><h2>Floodwatch</h2><div class="small status">In planning</div></header><div class="project-plate floodplate">
-<!-- FLOODWATCH ART SLOT: save the finished illustration as assets/floodwatch.jpg and it appears here automatically. Until then the placeholder below shows. See ART-NOTES.md. -->
-<img class="art-slot" src="assets/floodwatch.jpg" width="1550" height="775" alt="Storm-blue engraving of a swollen river and a flood gauge on a bridge pier." onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="plate-note" hidden><span class="small">Floodwatch</span><span class="small muted">Illustration to come</span></div></div></a>
-</div></main>
+<img class="art-slot" src="assets/watch/floodwatch.jpg" width="1774" height="887" alt="Deep river-blue engraving of a swollen creek, a bridge gauge and a small red warning flag." onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="plate-note" hidden><span class="small">Floodwatch</span><span class="small muted">Illustration to come</span></div></div></a>
+</div>
+<section class="finder-catalog" aria-labelledby="finder-catalog-heading">
+<p class="small muted">The watch series</p><h2 id="finder-catalog-heading">More finder concepts</h2>
+<div class="finder-cards" id="finder-cards"></div>
+</section></main>
 
 <!-- FIREWATCH -->
 <main class="view product" id="firewatch" data-page hidden>
@@ -238,8 +250,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 <main class="view product flood" id="floodwatch" data-page hidden>
 <div class="product-top small"><a href="#work">Finders</a><span>Finder / In planning</span></div>
 <section class="product-hero"><div><p class="small">A Robin Mail finder</p><h1 tabindex="-1" data-heading>Floodwatch</h1><p class="intro">Floodwatch is our next finder. It will apply the same approach as Firewatch to public reports of serious flood damage in West Virginia: gather the reports, explain why each one matters, and keep the source attached.</p></div>
-<!-- FLOODWATCH ART SLOT: same file as the Work page, assets/floodwatch.jpg. See ART-NOTES.md. -->
-<figure><img class="art-slot" src="assets/floodwatch.jpg" width="1550" height="775" alt="Storm-blue engraving of a swollen river and a flood gauge on a bridge pier." onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="figure-placeholder" hidden><span class="small">Illustration to come</span></div><figcaption class="small">Floodwatch · original illustration</figcaption></figure></section>
+<figure><img class="art-slot" src="assets/watch/floodwatch.jpg" width="1774" height="887" alt="Deep river-blue engraving of a swollen creek, a bridge gauge and a small red warning flag." onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="figure-placeholder" hidden><span class="small">Illustration to come</span></div><figcaption class="small">Floodwatch · original illustration</figcaption></figure></section>
 <section class="sheet"><div class="standing"><p class="small">Where it stands</p><div><p>In planning.</p><p>More detail will be added here as the work takes shape.</p></div></div></section>
 </main>
 
@@ -261,6 +272,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 </div>
 
 <script src="dispatches.js"></script>
+<script src="finders.js"></script>
 <script>
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const posts=window.DISPATCHES||[];
@@ -277,9 +289,18 @@ posts.forEach((p,i)=>{
 });
 feed.insertAdjacentHTML('beforeend',`<div class="feed-end"><p>${posts.length===1?"That's the first dispatch.":"That's every dispatch so far."} New ones appear here first and stay in the archive.</p><button class="ink-button small" type="button" data-open-tray>Open the archive</button></div>`);
 
+/* Finder concepts use the same illustration on the Work card and detail page. */
+const concepts=window.FINDER_CONCEPTS||[],finderCards=document.getElementById('finder-cards');
+concepts.forEach(([title,description,alt])=>{
+  const id=title.toLowerCase(),image='assets/watch/'+id+'.jpg';
+  finderCards.insertAdjacentHTML('beforeend',`<a class="finder-card" href="#${id}"><img src="${image}" width="1774" height="887" loading="lazy" decoding="async" alt=""><header><p class="small muted">Finder concept</p><h3>${esc(title)}</h3></header></a>`);
+  tray.insertAdjacentHTML('beforebegin',`<main class="view product finder-concept" id="${id}" data-page hidden><div class="product-top small"><a href="#work">Finders</a><span>Finder concept</span></div><section class="product-hero"><div><p class="small">A Robin Mail finder concept</p><h1 tabindex="-1" data-heading>${esc(title)}</h1><p class="intro">${esc(description)}</p></div><figure><img src="${image}" width="1774" height="887" loading="lazy" decoding="async" alt="${esc(alt)}"><figcaption class="small">${esc(title)} · original illustration</figcaption></figure></section></main>`);
+});
+
 /* Routing */
 const pages=[...document.querySelectorAll('[data-page]')],nav=[...document.querySelectorAll('[data-nav]')],toggle=document.getElementById('tray-toggle'),label=document.getElementById('tray-label'),folio=document.getElementById('folio');
 const names={desk:'Studio desk',work:'Finders',firewatch:'Firewatch',floodwatch:'Floodwatch',contact:'Contact'};
+concepts.forEach(([title])=>names[title.toLowerCase()]=title);
 const postIds=new Set(posts.map(p=>p.id));posts.forEach(p=>names[p.id]=p.title);
 let active='desk';
 function setTray(on){tray.classList.toggle('open',on);tray.inert=!on;tray.setAttribute('aria-hidden',String(!on));toggle.setAttribute('aria-expanded',String(on));label.textContent=on?'Close dispatch tray':'Open dispatch tray';}
