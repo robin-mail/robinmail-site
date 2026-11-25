@@ -86,6 +86,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .finder-card header{padding:10px 13px 12px;border-top:1px solid #c9ccc3}
 .finder-card h3{font:500 1.55rem/1.1 var(--serif);margin-top:3px}
 .finder-card:hover header{background:#e5ebdf}
+.finder-group-blurb{max-width:62ch;margin:-8px 0 18px}
+.finder-group .projects{min-height:0;margin-bottom:16px;border:1px solid #a2aba0}
+.finder-group .project h2{font:500 clamp(1.55rem,3.3vw,3rem)/1 var(--serif);margin:7px 0 4px}
 .finder-concept h1{font-size:clamp(2.25rem,5.5vw,5.4rem);overflow-wrap:anywhere}
 .steps.light li{border-bottom:1px solid var(--line)}.steps.light b{color:var(--rust);opacity:1}.steps.light strong{font-weight:650}
 .product.flood{--bg:#eaf0f3;--fg:#213d52;--deep:#22405a;--deep-ink:#eef3f7;--rule:#a2b5c4;--card:#f8fafb}.figure-placeholder{aspect-ratio:2/1;display:grid;place-items:center;background:#dde6ec;color:#2a4458}
@@ -209,14 +212,23 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 </main>
 
 <!-- WORK -->
-<main class="view" id="work" data-page hidden><div class="work-head"><span class="small" tabindex="-1" data-heading>Finders</span><span class="small muted">Open a finder</span></div><div class="projects two">
+<main class="view" id="work" data-page hidden><div class="work-head"><span class="small" tabindex="-1" data-heading>Finders</span><span class="small muted">Open a finder</span></div>
+<section class="finder-catalog finder-group" aria-labelledby="group-property">
+<p class="small muted">For restoration, adjusting and property work</p><h2 id="group-property">Property and disaster</h2><p class="finder-group-blurb muted">Fires, floods, storms, outages, landslides and properties in distress, found in public reports.</p>
+<div class="projects two">
 <a class="project" href="#firewatch"><header><div class="small">Finder</div><h2>Firewatch</h2><div class="small status">In development</div></header><div class="project-plate watchplate"><img src="assets/print-03.jpg" width="1550" height="775" alt="Appalachian fire lookout in pine-green ink."></div></a>
 <a class="project" href="#floodwatch"><header><div class="small">Finder</div><h2>Floodwatch</h2><div class="small status">In planning</div></header><div class="project-plate floodplate">
 <img class="art-slot" src="assets/watch/floodwatch.jpg" width="1774" height="887" alt="Deep river-blue engraving of a swollen creek, a bridge gauge and a small red warning flag." onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="plate-note" hidden><span class="small">Floodwatch</span><span class="small muted">Illustration to come</span></div></div></a>
 </div>
-<section class="finder-catalog" aria-labelledby="finder-catalog-heading">
-<p class="small muted">The watch series</p><h2 id="finder-catalog-heading">More finder concepts</h2>
-<div class="finder-cards" id="finder-cards"></div>
+<div class="finder-cards" data-group="property"></div>
+</section>
+<section class="finder-catalog finder-group" aria-labelledby="group-legal">
+<p class="small muted">For law firms</p><h2 id="group-legal">Legal</h2><p class="finder-group-blurb muted">Data breaches, spills, mine incidents, layoffs and safety warnings that can turn into cases.</p>
+<div class="finder-cards" data-group="legal"></div>
+</section>
+<section class="finder-catalog finder-group" aria-labelledby="group-business">
+<p class="small muted">For businesses looking for customers</p><h2 id="group-business">Business</h2><p class="finder-group-blurb muted">New businesses, permits, public bids, liquor licenses and new wells, spotted early in public records.</p>
+<div class="finder-cards" data-group="business"></div>
 </section></main>
 
 <!-- FIREWATCH -->
@@ -290,9 +302,10 @@ posts.forEach((p,i)=>{
 feed.insertAdjacentHTML('beforeend',`<div class="feed-end"><p>${posts.length===1?"That's the first dispatch.":"That's every dispatch so far."} New ones appear here first and stay in the archive.</p><button class="ink-button small" type="button" data-open-tray>Open the archive</button></div>`);
 
 /* Finder concepts use the same illustration on the Work card and detail page. */
-const concepts=window.FINDER_CONCEPTS||[],finderCards=document.getElementById('finder-cards');
-concepts.forEach(([title,description,alt])=>{
+const concepts=window.FINDER_CONCEPTS||[],groupCards=[...document.querySelectorAll('.finder-cards[data-group]')];
+concepts.forEach(([title,description,alt,group])=>{
   const id=title.toLowerCase(),image='assets/watch/'+id+'.jpg';
+  const finderCards=groupCards.find(el=>el.dataset.group===group)||groupCards[0];
   finderCards.insertAdjacentHTML('beforeend',`<a class="finder-card" href="#${id}"><img src="${image}" width="1774" height="887" loading="lazy" decoding="async" alt=""><header><p class="small muted">Finder concept</p><h3>${esc(title)}</h3></header></a>`);
   tray.insertAdjacentHTML('beforebegin',`<main class="view product finder-concept" id="${id}" data-page hidden><div class="product-top small"><a href="#work">Finders</a><span>Finder concept</span></div><section class="product-hero"><div><p class="small">A Robin Mail finder concept</p><h1 tabindex="-1" data-heading>${esc(title)}</h1><p class="intro">${esc(description)}</p></div><figure><img src="${image}" width="1774" height="887" loading="lazy" decoding="async" alt="${esc(alt)}"><figcaption class="small">${esc(title)} · original illustration</figcaption></figure></section></main>`);
 });
