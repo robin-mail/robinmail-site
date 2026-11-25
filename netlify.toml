@@ -1,0 +1,38 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/AGENTS.md"
+  to = "/"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/CLAUDE.md"
+  to = "/"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/CHANGELOG.md"
+  to = "/"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.github/*"
+  to = "/"
+  status = 404
+  force = true

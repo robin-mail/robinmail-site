@@ -4,7 +4,9 @@ All rules for working on this site are in AGENTS.md. They apply to Claude exactl
 
 Short version:
 
-1. Pull the latest main before any edit, and read `git log -15 --stat` and CHANGELOG.md.
-2. Change only what Walker asked. Never undo the other assistant's work.
-3. Commit as `[Claude] ...`, add a CHANGELOG.md line, push to main right away.
-4. Never drag-and-drop or zip-upload to Netlify. Netlify publishes from main.
+1. Your lane is how the site works: the script, forms, data format, meta tags, Netlify and GitHub config. ChatGPT owns the look: styles, layout, images.
+2. Start from the latest main and check open pull requests before any edit.
+3. Work on a `claude/...` branch and open a pull request with the handoff note. Do not push to main or merge unless Walker says so.
+4. Need ChatGPT for the look? Comment `@codex <request>` on the pull request, once.
+5. When tagged with @claude on GitHub: commit to that pull request's branch and reply on it with what you did.
+6. Never drag-and-drop or zip-upload to Netlify. Netlify publishes from main.
