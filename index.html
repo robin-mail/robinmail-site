@@ -257,14 +257,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 <!-- CONTACT -->
 <main class="view contact" id="contact" data-page hidden><section class="reply">
 <div><p class="small">Robin Mail / Contact</p><h1 tabindex="-1" data-heading>What do you need to find?</h1><p>Tell us what you're looking for, where it tends to turn up, and how quickly you need to know. Rough answers are fine.</p><p>If you have an example of a report or notice you wish you'd caught sooner, include it.</p></div>
-<form class="form" id="inquiry" novalidate>
+<form class="form" id="inquiry" name="inquiry" method="POST" data-netlify="true" netlify-honeypot="company-site" novalidate>
+<input type="hidden" name="form-name" value="inquiry">
+<p hidden><label>Leave this empty<input name="company-site" tabindex="-1" autocomplete="off"></label></p>
 <label>What do you need to catch?<span class="hint">A kind of report, notice or record. An example helps.</span><textarea rows="3" name="goal" required></textarea></label>
 <label>Where does it usually show up?<span class="hint">News sites, public logs, agency pages, social posts. "Not sure" is fine.</span><textarea rows="2" name="inputs"></textarea></label>
 <label>How soon do you need to know?<span class="hint">Within the hour, the same day, or a weekly roundup.</span><input name="timing"></label>
 <label>What happens once you find it?<span class="hint">Who gets it and what they do next.</span><textarea rows="2" name="next"></textarea></label>
-<button type="submit">Preview your brief</button>
-<p role="status" id="form-status" class="status muted">Preview only. Nothing is sent or saved.</p>
-<textarea id="brief" rows="9" readonly hidden aria-label="Brief preview"></textarea>
+<label>Your name<input name="name" autocomplete="name" required></label>
+<label>Your email<span class="hint">We reply here.</span><input type="email" name="email" autocomplete="email" required></label>
+<button type="submit">Send your brief</button>
+<p role="status" id="form-status" class="status muted">We read every brief and reply by email.</p>
+<textarea id="brief" rows="9" readonly hidden aria-label="The brief you sent"></textarea>
 </form></section></main>
 
 <aside class="tray" id="tray" aria-hidden="true" inert aria-label="Dispatch archive"><div class="tray-grid" id="archive"><div class="archive-intro"><p class="small desk-kicker">Robin Mail journal</p><h2>Dispatches</h2><p class="muted">Notes and updates from the studio.</p></div></div></aside>
@@ -317,11 +321,23 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-open-tray]
 tray.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{setTray(false);if(a.hash==='#'+active)document.getElementById(active).querySelector('[data-heading]').focus()}));
 addEventListener('keydown',e=>{if(e.key==='Escape'&&tray.classList.contains('open')){setTray(false);toggle.focus()}});
 
-/* Contact: local preview only */
-const form=document.getElementById('inquiry');
-form.addEventListener('submit',e=>{e.preventDefault();const data=new FormData(form),brief=document.getElementById('brief'),status=document.getElementById('form-status');
-  if(!String(data.get('goal')).trim()){status.textContent='Add a line about what you want to make or solve, then preview again.';form.goal.focus();return;}
+/* Contact: sends the brief to Netlify Forms (form "inquiry") */
+const form=document.getElementById('inquiry'),field=n=>form.elements.namedItem(n);
+form.addEventListener('submit',async e=>{e.preventDefault();const data=new FormData(form),brief=document.getElementById('brief'),status=document.getElementById('form-status'),send=form.querySelector('button[type="submit"]');
+  const val=k=>String(data.get(k)||'').trim(),email=val('email');
+  if(!val('goal')){status.textContent='Add a line about what you want to catch, then send again.';field('goal').focus();return;}
+  if(!val('name')){status.textContent='Add your name so we know who to reply to.';field('name').focus();return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status.textContent='Add an email address we can reply to.';field('email').focus();return;}
   const rows=[['What to catch','goal'],['Where it shows up','inputs'],['How soon','timing'],['What happens next','next']];
-  brief.value=rows.map(([n,k])=>n+': '+(String(data.get(k)||'').trim()||'To be discussed')).join('\n\n');
-  brief.hidden=false;brief.focus();status.textContent='Brief ready to review. Nothing was sent.';});
+  send.disabled=true;status.textContent='Sending your brief...';
+  try{
+    const res=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    form.reset();
+    brief.value=rows.map(([n,k])=>n+': '+(val(k)||'To be discussed')).join('\n\n');
+    brief.hidden=false;
+    status.textContent='Sent. Thanks, '+val('name')+'. We will reply to '+email+'.';
+  }catch(err){status.textContent='Your brief did not send. Please try again in a moment.';}
+  finally{send.disabled=false;}
+});
 </script></body></html>
